@@ -13,7 +13,7 @@ V = torch.tensor([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.], [0., 1., 1.]])
 ```
 
 <div align="center">
-  <img src="images/matrices.png" alt="Matrices" width =600 />
+  <img src="images/matrices.png" alt="Matrices" width =500 />
 </div>
 
 ## Paso 2. Cálculo de las puntuaciones de atención
@@ -25,5 +25,14 @@ scores = torch.matmul(Q, K.t())
 ```
 
 <div align="center">
-  <img src="images/scores.png" alt="Scores" width =600 />
+  <img src="images/scores.png" alt="Scores" width =500 />
 </div>
+
+## Paso 3. Escalado de las puntuaciones de atención
+ 
+Para estabilizar los valores, se divide cada puntuación por la raíz cuadrada de la dimensión de los vectores $K$ (normalmente denotada como $d_k$). Esto evita que los valores sean excesivamente grandes, lo cual podría dificultar la convergencia del modelo.
+
+```python
+d_k = K.size(-1)
+scaled_scores = scores / math.sqrt(d_k)
+```
