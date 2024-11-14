@@ -30,9 +30,29 @@ scores = torch.matmul(Q, K.t())
 
 ## Paso 3. Escalado de las puntuaciones de atención
  
-Para estabilizar los valores, se divide cada puntuación por la raíz cuadrada de la dimensión de los vectores $K$ (normalmente denotada como $d_k$). Esto evita que los valores sean excesivamente grandes, lo cual podría dificultar la convergencia del modelo.
+Para estabilizar los valores, se divide cada puntuación por la raíz cuadrada de la dimensión de los vectores $K$ (normalmente denotada como $\sqrt{d_k}$). Esto evita que los valores sean excesivamente grandes, lo cual podría dificultar la convergencia del modelo.
 
 ```python
 d_k = K.size(-1)
 scaled_scores = scores / math.sqrt(d_k)
 ```
+
+<div align="center">
+  <img src="images/scaled.png" alt="Scaled" width =800 />
+</div>
+
+## Paso 4. Aplicación de la matriz de enmascaramiento
+
+Durante el proceso de entrenamiento, el objetivo es que el modelo anticipe la salida futura en función del contexto actual y previo; es decir, que cada *token* dependa exclusivamente de los *tokens* que le preceden. Para cumplir con esta restricción, es necesario aplicar un enmascaramiento a la matriz antes de ingresarla en la función *softmax*, con el fin de que no se consideren las probabilidades asociadas a los *tokens* futuros.
+
+Este enmascaramiento se logra transformando los elementos en el triángulo superior de la matriz en ceros y, posteriormente, asignándoles el valor $-\infty$. Así, al aplicar la función *softmax*, dichos valores futuros obtendrán una probabilidad cercana a cero, evitando su influencia en el cálculo de las predicciones.
+
+```python
+mask = torch.triu(torch.ones(scaled_scores.size(-1), scaled_scores.size(-1)), diagonal=1)
+mask = mask == 1
+masked_scaled_scores = scaled_scores.masked_fill(mask, float('-inf'))
+```
+
+<div align="center">
+  <img src="images/mask.png" alt="Mask" width =600 />
+</div>
