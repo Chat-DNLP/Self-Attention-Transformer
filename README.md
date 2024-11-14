@@ -56,3 +56,27 @@ masked_scaled_scores = scaled_scores.masked_fill(mask, float('-inf'))
 <div align="center">
   <img src="images/mask.png" alt="Mask" width =600 />
 </div>
+
+## Paso 5. Aplicación de la función Softmax
+
+Tras aplicar el enmascaramiento de valores, se utiliza la función softmax en cada fila de la matriz resultante. La función softmax transforma cada fila en una distribución de probabilidad, destacando los tokens más relevantes para la atención y reduciendo la relevancia de aquellos menos importantes. Esto permite que cada token concentre una mayor "atención" en los tokens significativos según su contexto dentro de la secuencia.
+
+```python
+attention = torch.nn.functional.softmax(masked_scaled_scores, dim=1)
+```
+
+<div align="center">
+  <img src="images/softmax.png" alt="Softmax" width =600 />
+</div>
+
+## Paso 6. Multiplicación con la matriz de valores ($V$)
+
+La matriz de probabilidades obtenida después de la softmax se multiplica con la matriz de valores (V) para obtener el vector de atención final para cada token.
+
+```python
+attention_vectors = torch.matmul(attention, V)
+```
+
+<div align="center">
+  <img src="images/atention.png" alt="Atention" width =700 />
+</div>
