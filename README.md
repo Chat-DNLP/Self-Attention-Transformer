@@ -80,3 +80,5 @@ attention_vectors = torch.matmul(attention, V)
 <div align="center">
   <img src="images/atention.png" alt="Atention" width =700 />
 </div>
+
+En definitiva, si se siguen los pasos descritos anteriormente, se obtienen los vectores de atención, los cuales se utilizan en cada una de las cabezas del transformer.
