@@ -1,5 +1,8 @@
 # Práctica: implementación del mecanismo de auto-atención con enmascaramiento del modelo Transformer
 
+- [Susana Suárez](https://github.com/susanasrez).
+- [Mara Pareja](https://github.com/marapareja17).
+
 En este repositorio se implementa de manera simple el mecanismo de auto-atención con enmascaramiento de la arquitectura Transformer. La finalidad de ellos es comprender con detalle el funcionamiento dicho mecanismo paso por paso.
 
 ## Paso 1. Cálculo de los vectores clave, consulta y valor (K,Q,V)
